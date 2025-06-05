@@ -1,0 +1,215 @@
+/*
+  Jogo da Velha Avançado
+  Desenvolvido por: Aliana Moraes
+*/
+
+/* --- Configuração Geral e Paleta de Cores --- */
+:root {
+    --cor-fundo: #1a202c;
+    --cor-container: #2d3748;
+    --cor-tabuleiro: #1a202c;
+    --cor-celula: #4a5568;
+    --cor-texto-principal: #e2e8f0;
+    --cor-texto-secundario: #a0aec0;
+    
+    --cor-jogador-x: #4fd1c5; 
+    --cor-jogador-o: #f687b3; 
+    --cor-vitoria: #f6e05e;  
+
+    /* Sombras para o Neumorfismo */
+    --sombra-clara: rgba(255, 255, 255, 0.1);
+    --sombra-escura: rgba(0, 0, 0, 0.4);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto-principal);
+    margin: 0;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/* --- Estrutura Principal --- */
+.container-jogo {
+    background-color: var(--cor-container);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 320px;
+}
+
+h1 {
+    color: var(--cor-texto-principal);
+    margin-bottom: 15px; 
+    font-size: 1.8em;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* --- Botões (Estilo Neumorfismo) --- */
+.selecao-modo, .controles {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.botao-modo, .botao-acao {
+    background-color: var(--cor-container);
+    color: var(--cor-texto-secundario);
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.8em;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    letter-spacing: 0.5px;
+    box-shadow: 4px 4px 8px var(--sombra-escura), -4px -4px 8px var(--sombra-clara);
+}
+
+.botao-modo:hover, .botao-acao:hover {
+    color: var(--cor-texto-principal);
+    transform: translateY(-2px);
+}
+
+.botao-modo:active, .botao-acao:active {
+    transform: translateY(0px);
+    box-shadow: inset 2px 2px 5px var(--sombra-escura), inset -2px -2px 5px var(--sombra-clara);
+}
+
+.botao-modo.ativo {
+    color: var(--cor-jogador-x);
+    box-shadow: inset 2px 2px 5px var(--sombra-escura), inset -2px -2px 5px var(--sombra-clara);
+}
+
+/* --- Placar e Status --- */
+.placar-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    margin-bottom: 15px; 
+    font-size: 0.9em;
+}
+
+.placar-info {
+    background-color: rgba(0,0,0,0.2);
+    padding: 6px 10px;
+    border-radius: 8px;
+    flex-grow: 1;
+}
+
+.status {
+    font-size: 1em;
+    color: var(--cor-texto-secundario);
+    margin-bottom: 15px; 
+    min-height: 1.5em; 
+    font-weight: 500;
+}
+
+/* --- Tabuleiro e Células --- */
+.tabuleiro {
+    display: grid;
+    grid-template-columns: repeat(3, 70px);
+    grid-template-rows: repeat(3, 70px);
+    gap: 5px;
+    background-color: var(--cor-tabuleiro);
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 15px;
+    width: 220px;
+    height: 220px; 
+    margin-left: auto;
+    margin-right: auto;
+    position: relative; 
+    border: none;
+}
+
+.celula {
+    background-color: var(--cor-celula);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 6px;
+    color: #fff;
+}
+
+.celula:hover:not(.marcada) { 
+    background-color: #5a6578;
+    transform: scale(1.02);
+}
+
+.celula.x {
+    color: var(--cor-jogador-x);
+}
+.celula.o {
+    color: var(--cor-jogador-o);
+}
+
+.celula.marcada {
+    animation: fadeInMark 0.4s ease;
+    cursor: not-allowed;
+}
+
+@keyframes fadeInMark {
+    from { opacity: 0; transform: scale(0.6); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.celula.vencedora {
+    background-color: var(--cor-container) !important; 
+    animation: pulseWinner 0.8s infinite alternate;
+}
+
+@keyframes pulseWinner {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
+/* --- Linha da Vitória (SVG) --- */
+.linha-vencedora-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    pointer-events: none; 
+    z-index: 1; 
+}
+
+.linha-vencedora-svg line {
+    stroke: var(--cor-vitoria); 
+    stroke-width: 6px;
+    stroke-linecap: round;
+    animation: drawLine 0.7s ease-out forwards;
+}
+
+@keyframes drawLine {
+  from {
+    stroke-dasharray: 1000; 
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+/* --- Créditos --- */
+.creditos {
+    margin-top: 25px;
+    font-size: 0.75em;
+    color: var(--cor-texto-secundario);
+    opacity: 0.7;
+    letter-spacing: 0.5px;
+}

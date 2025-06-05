@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-jogo">
+        <h1>Jogo da Velha</h1>
+
+        <div class="selecao-modo">
+            <button id="modoPvP" class="botao-modo">Humano vs Humano</button>
+            <button id="modoPvIA" class="botao-modo ativo">Humano vs Computador</button>
+        </div>
+
+        <div class="placar-container">
+            <div id="placarX" class="placar-info">Jogador X: 0</div>
+            <div id="placarO" class="placar-info">Computador O: 0</div>
+        </div>
+
+        <div id="statusArea" class="status">Sua vez (X)</div>
+        
+        <div id="tabuleiro" class="tabuleiro">
+            <svg id="linhaVencedoraSvg" class="linha-vencedora-svg"></svg> 
+        </div>
+
+        <div class="controles">
+            <button id="botaoReiniciar" class="botao-acao">Nova Rodada</button>
+            <button id="botaoZerarPlacar" class="botao-acao">Zerar Placar</button>
+        </div>
+
+        <div class="creditos">
+            Desenvolvido por Aliana Moraes
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
